@@ -1,4 +1,4 @@
-package com.dh.g2.Models;
+package com.dh.g2.models;
 
 import lombok.*;
 
