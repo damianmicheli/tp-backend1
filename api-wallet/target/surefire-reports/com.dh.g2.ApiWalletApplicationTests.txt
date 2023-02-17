@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.dh.g2.ApiWalletApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.933 s <<< FAILURE! - in com.dh.g2.ApiWalletApplicationTests
+contextLoads  Time elapsed: 0.005 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'walletCreationService' defined in file [/home/ghost/Desktop/Digital/dh202302-g2/api-wallet/target/classes/com/dh/g2/service/impl/WalletCreationService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'walletJpaRepository' defined in com.dh.g2.repository.WalletJpaRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class com.dh.g2.domain.Wallet
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'walletJpaRepository' defined in com.dh.g2.repository.WalletJpaRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is java.lang.IllegalArgumentException: Not a managed type: class com.dh.g2.domain.Wallet
+Caused by: java.lang.IllegalArgumentException: Not a managed type: class com.dh.g2.domain.Wallet
+
