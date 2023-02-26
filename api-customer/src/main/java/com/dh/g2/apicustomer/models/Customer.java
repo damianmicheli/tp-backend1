@@ -4,17 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-
-/*@Getter
+@Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "customers")*/
+@Table(name = "customers")
 public class Customer {
-/*
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,5 @@ public class Customer {
     private String gender;
     @Column(name = "date_of_birth")
     private LocalDate birthDate;
-*/
-
 
 }
