@@ -10,8 +10,8 @@ public class CustomerService {
     @Autowired
     private ICustomerRepository repository;
 
-    public void save(Customer customer ){
-        repository.save(customer);
+    public Customer save(Customer customer ){
+        return repository.save(customer);
     }
 
     public void delete(Long id){
