@@ -5,16 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-
-/*@Getter
+@Getter
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "customers")*/
+@Table(name = "customers")
 public class Customer {
-/*
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +33,5 @@ public class Customer {
     private String gender;
     @Column(name = "date_of_birth")
     private LocalDate birthDate;
-*/
-
 
 }
