@@ -1,12 +1,12 @@
 package com.dh.g2.apiwallet.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,8 +25,12 @@ public class Wallet {
     @Column(name = "id_num")
     private int idNum;
     @NonNull
-    @Column(name = "id_currency")
-    private int idCurrency;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_currency", referencedColumnName = "idCurrency")
+    @JsonIgnore
+    private Currency currency;
+
+
     @NonNull
     @Column(name = "balance")
     private Double balance;
