@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/configServer/configServer.iml" filepath="$PROJECT_DIR$/configServer/configServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/dh202302-g2.iml" filepath="$PROJECT_DIR$/.idea/dh202302-g2.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/api-wallet/g2.iml" filepath="$PROJECT_DIR$/api-wallet/g2.iml" />
     </modules>
   </component>
 </project>
