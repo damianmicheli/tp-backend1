@@ -17,12 +17,11 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@UniqueConstraint(name= "WalletCostumer",)
+    @Column(name = "id_type",unique=true)
     @NonNull
-    @Column(name = "id_type")
     private String idType;
     @NonNull
-    @Column(name = "id_num")
+    @Column(name = "id_num", unique = true)
     private int idNum;
     @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
