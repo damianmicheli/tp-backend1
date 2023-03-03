@@ -17,7 +17,7 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    //@UniqueConstraint(name= "WalletCostumer",)
     @NonNull
     @Column(name = "id_type")
     private String idType;
@@ -29,7 +29,6 @@ public class Wallet {
     @JoinColumn(name = "id_currency", referencedColumnName = "idCurrency")
     @JsonIgnore
     private Currency currency;
-
 
     @NonNull
     @Column(name = "balance")
