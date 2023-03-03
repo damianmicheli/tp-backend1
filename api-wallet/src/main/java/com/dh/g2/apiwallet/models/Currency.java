@@ -13,12 +13,9 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class Currency {
-
-
     @Id
     private int idCurrency;
     @Column
     private String description;
-
 
 }
