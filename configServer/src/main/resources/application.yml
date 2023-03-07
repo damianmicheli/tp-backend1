@@ -8,6 +8,6 @@ spring:
       server:
         git:
           uri: https://github.com/jonathanvictoricadh/dh202302-g2-config
-#          default-label: configTest
+          default-label: master
           force-pull: true
 #          search-paths:
