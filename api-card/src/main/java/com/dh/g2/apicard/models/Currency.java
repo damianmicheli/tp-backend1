@@ -1,4 +1,4 @@
-package com.dh.g2.apitransfer.models;
+package com.dh.g2.apicard.models;
 
 public class Currency {
 

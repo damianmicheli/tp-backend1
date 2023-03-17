@@ -1,13 +1,13 @@
-package com.dh.g2.apitransfer;
+package com.dh.g2.apicard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ApiTransferApplication {
+public class ApiCardApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ApiTransferApplication.class, args);
+		SpringApplication.run(ApiCardApplication.class, args);
 	}
 
 }
