@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "api-card")
-@LoadBalancerClient(value="api-card", configuration= LoadBalancerConfiguration.class)
+@FeignClient(name = "api-wallet")
+@LoadBalancerClient(value="api-wallet", configuration= LoadBalancerConfiguration.class)
 public interface WalletServiceClient {
 
 

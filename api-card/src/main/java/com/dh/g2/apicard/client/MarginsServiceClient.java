@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.math.BigDecimal;
 import java.util.List;
 
-@FeignClient(name = "api-card")
-@LoadBalancerClient(value="api-card", configuration= LoadBalancerConfiguration.class)
+@FeignClient(name = "api-margins")
+@LoadBalancerClient(value="api-margins", configuration= LoadBalancerConfiguration.class)
 public interface MarginsServiceClient {
 
     @GetMapping("/calculate/{documentType}/{documentValue}")
