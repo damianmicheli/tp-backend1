@@ -1,4 +1,4 @@
-package com.dh.g2.apicard.models;
+package com.dh.g2.apicard.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,8 +10,6 @@ import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.math.BigDecimal;
 
 //import javax.persistence.Id;
 import java.io.Serial;

@@ -1,8 +1,11 @@
 package com.dh.g2.apicard.service;
 
-import com.dh.g2.apicard.models.CreditCard;
-import com.dh.g2.apicard.models.Currency;
+import com.dh.g2.apicard.client.MarginsServiceClient;
+import com.dh.g2.apicard.model.CreditCard;
+import com.dh.g2.apicard.model.Currency;
 import com.dh.g2.apicard.repository.ICreditCardRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +13,9 @@ import org.springframework.stereotype.Service;
 public class CreditCardService {
 
     @Autowired
-    private ICreditCardRepository repository;
+    private ICreditCardRepository creditCardRepository;
+    @Autowired
+    private MarginsServiceClient marginsServiceClient;
 
     /*
     Las operaciones básicas que va tener que implementar este microservicio son:
@@ -24,19 +29,27 @@ public class CreditCardService {
        4) En caso de no haber disponible se lanza un error.
     */
 
+
+
     public CreditCard save(String idType, String idNumber) {
         // TODO: Validar si el usuario ya tiene una tarjeta creada/asignada
         // TODO: Consultar a api-margins el limite para esta nueva tarjeta
-        if(repository.findByIdTypeAndIdNumber(idType,idNumber) != null) {
+        if(creditCardRepository.findByIdTypeAndIdNumber(idType,idNumber) != null) {
             CreditCard creditCard = new CreditCard( idNumber+"123456", idType, idNumber, new Currency("1","ARS"), null,null,null /*limit, usedLimit, availableLimit*/);
-            return repository.save(creditCard);
+            return creditCardRepository.save(creditCard);
         }
         return null;
     }
 
+    //@Retry(name = "retry Card")
+    //@CircuitBreaker(name = "clientCard", fallbackMethod = "findCardFallBack")
     public CreditCard find(String idType, String idNumber) {
-        return repository.findByIdTypeAndIdNumber(idType, idNumber);
+        return creditCardRepository.findByIdTypeAndIdNumber(idType, idNumber);
     }
+    public MarginsServiceClient.CalificationDTO findCardFallBack(String idNumber, Throwable t) throws Exception {
+        throw new Exception("Not Found Card");
+    }
+
 
 
 }
