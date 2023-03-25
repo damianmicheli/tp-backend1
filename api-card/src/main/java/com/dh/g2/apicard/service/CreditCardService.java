@@ -40,11 +40,11 @@ public class CreditCardService {
         creditCard.setIdType(idType);
         creditCard.setIdNumber(idNumber);
         creditCard.setCardNumber(idNumber + Math.random()*Math.pow(10,6));
-        //MarginsFeign.CalificationDTO calificationDTO = marginsFeign.calculateCalification(creditCard.getIdType(), creditCard.getIdNumber());
-        //BigDecimal totalMarginCard = calificationDTO.getSublimits().stream().filter(sublimit -> sublimit.getConcept().name().equals(MarginsFeign.CalificationDTO.Concept.CARD)).findFirst().get().getTotalMargin();
-        //creditCard.setLimit(totalMarginCard);
-        //creditCard.setAvailableLimit(totalMarginCard);
-        //creditCard.setUsedLimit(BigDecimal.ZERO);
+        MarginsFeign.CalificationDTO calificationDTO = marginsFeign.calculateCalification(creditCard.getIdType(), creditCard.getIdNumber());
+        BigDecimal totalMarginCard = calificationDTO.getSublimits().stream().filter(sublimit -> sublimit.getConcept().name().equals(MarginsFeign.CalificationDTO.Concept.CARD)).findFirst().get().getTotalMargin();
+        creditCard.setLimit(totalMarginCard);
+        creditCard.setAvailableLimit(totalMarginCard);
+        creditCard.setUsedLimit(BigDecimal.ZERO);
         creditCardRepository.save(creditCard);
         return creditCard.getIdNumber();
 

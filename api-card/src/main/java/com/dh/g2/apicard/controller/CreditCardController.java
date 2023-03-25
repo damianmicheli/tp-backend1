@@ -28,9 +28,9 @@ public class CreditCardController {
     */
 
     @PostMapping("/save")
-    String saveCreditCard(@RequestBody String idType, String idNumber) throws CardException {
-    //    return creditCardService.save(idType, idNumber);
-        return idType;
+    String saveCreditCard(@RequestBody CreditCard creditCard ) throws CardException {
+        creditCardService.save(creditCard.getIdType(), creditCard.getIdNumber());
+        return creditCard.getIdType();
     }
 
     @GetMapping("/find")

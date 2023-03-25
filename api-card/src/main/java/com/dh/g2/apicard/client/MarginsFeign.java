@@ -37,7 +37,7 @@ public interface MarginsFeign {
         }
 
         public enum Concept {
-            CARD
+            CARD,LOAN,CHECK
         }
     }
 
