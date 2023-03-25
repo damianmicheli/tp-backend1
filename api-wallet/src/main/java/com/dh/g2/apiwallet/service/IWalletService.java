@@ -10,6 +10,6 @@ public interface IWalletService {
     //Wallet find(String idType, int idNum);
     String update(String idType, int idNum, Double balance);
     Double getBalanceByCurrency(String idType, int idNum, int idCurrency);
-    List<String> getAllBalances(String idType, int idNum);
+    List <String> getAllBalances(String idType, int idNum);
 
 }
