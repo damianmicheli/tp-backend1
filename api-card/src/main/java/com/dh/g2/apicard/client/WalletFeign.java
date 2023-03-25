@@ -1,11 +1,9 @@
 package com.dh.g2.apicard.client;
 
 import com.dh.g2.apicard.config.LoadBalancerConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +12,7 @@ import java.util.List;
 
 @FeignClient(name = "api-wallet")
 @LoadBalancerClient(value="api-wallet", configuration= LoadBalancerConfiguration.class)
-public interface WalletServiceClient {
+public interface WalletFeign {
 
 
     @GetMapping()

@@ -1,6 +1,7 @@
 package com.dh.g2.apicard.controller;
 
 
+import com.dh.g2.apicard.exceptions.CardException;
 import com.dh.g2.apicard.model.CreditCard;
 import com.dh.g2.apicard.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/creditcard/")
+@RequestMapping("/api/creditcard")
 public class CreditCardController {
 
     @Autowired
@@ -27,8 +28,9 @@ public class CreditCardController {
     */
 
     @PostMapping("/save")
-    ResponseEntity<CreditCard> saveCreditCard(@RequestBody String idType, String idNumber) {
-        return ResponseEntity.ok().body(creditCardService.save(idType, idNumber));
+    String saveCreditCard(@RequestBody String idType, String idNumber) throws CardException {
+    //    return creditCardService.save(idType, idNumber);
+        return idType;
     }
 
     @GetMapping("/find")
