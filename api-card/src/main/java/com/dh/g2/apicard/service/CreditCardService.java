@@ -45,9 +45,7 @@ public class CreditCardService {
         creditCard.setLimit(totalMarginCard);
         creditCard.setAvailableLimit(totalMarginCard);
         creditCard.setUsedLimit(BigDecimal.ZERO);
-        creditCardRepository.save(creditCard);
-        return creditCard.getIdNumber();
-
+        return creditCardRepository.save(creditCard).getIdNumber();
     }
 
     //@Retry(name = "retry Card")

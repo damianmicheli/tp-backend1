@@ -30,12 +30,12 @@ public class CreditCardController {
     @PostMapping("/save")
     String saveCreditCard(@RequestBody CreditCard creditCard ) throws CardException {
         creditCardService.save(creditCard.getIdType(), creditCard.getIdNumber());
-        return creditCard.getIdType();
+        return creditCard.getIdNumber();
     }
 
     @GetMapping("/find")
-    ResponseEntity<CreditCard> findCreditCard(@RequestBody String idType, String idNumber) {
-        return ResponseEntity.ok().body(creditCardService.find(idType, idNumber));
+    ResponseEntity<CreditCard> findCreditCard(@RequestBody CreditCard creditCard) {
+        return ResponseEntity.ok().body(creditCardService.find(creditCard.getIdType(), creditCard.getIdNumber()));
     }
 
 
