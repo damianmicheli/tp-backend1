@@ -14,7 +14,7 @@ import java.util.List;
 
 @FeignClient(name = "api-margins")
 @LoadBalancerClient(value="api-margins", configuration= LoadBalancerConfiguration.class)
-public interface MarginsServiceClient {
+public interface MarginsFeign {
 
     @GetMapping("/calculate/{documentType}/{documentValue}")
     public CalificationDTO calculateCalification(@PathVariable String documentType, @PathVariable String documentValue);
@@ -27,9 +27,6 @@ public interface MarginsServiceClient {
         private String documentValue;
         private BigDecimal totalMargin;
         private BigDecimal totalMarginAdditional;
-        private EconomicActivity economicActivity;
-        private RiskLevel riskLevel;
-        private CustomerCategory customerCategory;
         private List<Sublimit> sublimits;
 
         @Getter
@@ -39,29 +36,8 @@ public interface MarginsServiceClient {
             private BigDecimal totalMargin;
         }
 
-        public enum CustomerCategory {
-            BASIC,PREMIUM
-        }
-
-        public enum EconomicActivity {
-            ForestProduction,
-            Agriculture,
-            Industry,
-            Trade,
-            Tourism,
-            Bank,
-            Education,
-            ProductionSupportServices,
-            CattleRaising,
-            Fishing
-        }
-
         public enum Concept {
             CARD,LOAN,CHECK
-        }
-
-        public enum RiskLevel {
-            HIGH,LIGHT,MEDIUM
         }
     }
 

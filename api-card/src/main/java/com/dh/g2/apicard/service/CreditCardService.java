@@ -1,13 +1,14 @@
 package com.dh.g2.apicard.service;
 
-import com.dh.g2.apicard.client.MarginsServiceClient;
+import com.dh.g2.apicard.client.MarginsFeign;
+import com.dh.g2.apicard.exceptions.CardException;
+import com.dh.g2.apicard.exceptions.MessageError;
 import com.dh.g2.apicard.model.CreditCard;
-import com.dh.g2.apicard.model.Currency;
 import com.dh.g2.apicard.repository.ICreditCardRepository;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class CreditCardService {
@@ -15,7 +16,7 @@ public class CreditCardService {
     @Autowired
     private ICreditCardRepository creditCardRepository;
     @Autowired
-    private MarginsServiceClient marginsServiceClient;
+    private MarginsFeign marginsFeign;
 
     /*
     Las operaciones básicas que va tener que implementar este microservicio son:
@@ -30,23 +31,29 @@ public class CreditCardService {
     */
 
 
+    public String save(String idType, String idNumber) throws CardException {
 
-    public CreditCard save(String idType, String idNumber) {
-        // TODO: Validar si el usuario ya tiene una tarjeta creada/asignada
-        // TODO: Consultar a api-margins el limite para esta nueva tarjeta
-        if(creditCardRepository.findByIdTypeAndIdNumber(idType,idNumber) != null) {
-            CreditCard creditCard = new CreditCard( idNumber+"123456", idType, idNumber, new Currency("1","ARS"), null,null,null /*limit, usedLimit, availableLimit*/);
-            return creditCardRepository.save(creditCard);
+        if (creditCardRepository.findByIdTypeAndIdNumber(idType, idNumber).isPresent()) {
+            throw new CardException(MessageError.CUSTOMER_WITH_CARD);
         }
-        return null;
+        CreditCard creditCard = new CreditCard();
+        creditCard.setIdType(idType);
+        creditCard.setIdNumber(idNumber);
+        creditCard.setCardNumber(idNumber + Math.random()*Math.pow(10,6));
+        MarginsFeign.CalificationDTO calificationDTO = marginsFeign.calculateCalification(creditCard.getIdType(), creditCard.getIdNumber());
+        BigDecimal totalMarginCard = calificationDTO.getSublimits().stream().filter(sublimit -> sublimit.getConcept().name().equals(MarginsFeign.CalificationDTO.Concept.CARD)).findFirst().get().getTotalMargin();
+        creditCard.setLimit(totalMarginCard);
+        creditCard.setAvailableLimit(totalMarginCard);
+        creditCard.setUsedLimit(BigDecimal.ZERO);
+        return creditCardRepository.save(creditCard).getIdNumber();
     }
 
     //@Retry(name = "retry Card")
     //@CircuitBreaker(name = "clientCard", fallbackMethod = "findCardFallBack")
     public CreditCard find(String idType, String idNumber) {
-        return creditCardRepository.findByIdTypeAndIdNumber(idType, idNumber);
+        return creditCardRepository.findByIdTypeAndIdNumber(idType, idNumber).get();
     }
-    public MarginsServiceClient.CalificationDTO findCardFallBack(String idNumber, Throwable t) throws Exception {
+    public MarginsFeign.CalificationDTO findCardFallBack(String idNumber, Throwable t) throws Exception {
         throw new Exception("Not Found Card");
     }
 
