@@ -1,10 +1,30 @@
-package com.dh.g2.apicard.models;
+package com.dh.g2.apicard.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Movement {                    // Movimientos de Tarjeta de Crédito
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+//import javax.persistence.Id;
+import java.io.Serial;
+import java.io.Serializable;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "MOVEMENT")
+public class Movement implements Serializable{                    // Movimientos de Tarjeta de Crédito
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private String movementId;              // ID movimiento
     private String cardNumber;              // Número de Tarjeta
     private String movementType;            // Tipo de movimiento (DÉBITO/CRÉDITO)
