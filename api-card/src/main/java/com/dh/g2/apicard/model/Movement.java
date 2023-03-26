@@ -36,17 +36,23 @@ public class Movement implements Serializable{                    // Movimientos
     private String status;                  // Estado (ACTIVO, ANULADO)
     private BigDecimal walletCommission;    // Comisión Billetera: (Importe * 0,50%)
 
+    @Getter
+    @Setter
     public static class Amount {            // Importe
         private Currency currency;          // Moneda
         private BigDecimal value;           // Valor
     }
 
+    @Getter
+    @Setter
     public static class DebtCollector {
         private String idType;              // Tipo de Documento
         private String idNumber;            // Número de Documento
         private String name;                // Razón Social
     }
 
+    @Getter
+    @Setter
     public static class OrderDetail {       // Detalle de compra: lista
         private String product;             // Artículo/Servicio
         private int amount;                 // Cantidad

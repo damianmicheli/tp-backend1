@@ -21,7 +21,7 @@ public interface MarginsFeign {
 
     @Getter
     @Setter
-    public class CalificationDTO {
+    class CalificationDTO {
 
         private String documentType;
         private String documentValue;

@@ -3,8 +3,10 @@ package com.dh.g2.apicard.controller;
 
 import com.dh.g2.apicard.exceptions.CardException;
 import com.dh.g2.apicard.model.CreditCard;
+import com.dh.g2.apicard.model.Movement;
 import com.dh.g2.apicard.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import javax.validation.Valid;
@@ -29,16 +31,21 @@ public class CreditCardController {
     */
 
     @PostMapping("/save")
+    @ResponseStatus(value = HttpStatus.CREATED)
     String saveCreditCard(@RequestBody CreditCard creditCard ) throws CardException {
         creditCardService.save(creditCard.getIdType(), creditCard.getIdNumber());
         return creditCard.getIdNumber();
     }
 
     @GetMapping("/find")
-    ResponseEntity<CreditCard> findCreditCard(@RequestBody CreditCard creditCard) {
-        return ResponseEntity.ok().body(creditCardService.find(creditCard.getIdType(), creditCard.getIdNumber()));
+    @ResponseStatus(value = HttpStatus.FOUND)
+    CreditCard findCreditCard(@RequestBody CreditCard creditCard) {
+        return creditCardService.find(creditCard.getIdType(), creditCard.getIdNumber());
     }
 
-
+    @PutMapping("/debit")
+    public void debit(@RequestBody Movement movement) throws CardException {
+        this.creditCardService.debit(movement);
+    }
 
 }

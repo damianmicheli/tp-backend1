@@ -4,7 +4,11 @@ import com.dh.g2.apicard.client.MarginsFeign;
 import com.dh.g2.apicard.exceptions.CardException;
 import com.dh.g2.apicard.exceptions.MessageError;
 import com.dh.g2.apicard.model.CreditCard;
+import com.dh.g2.apicard.model.Currency;
+import com.dh.g2.apicard.model.Movement;
 import com.dh.g2.apicard.repository.ICreditCardRepository;
+import com.dh.g2.apicard.repository.IMovementRepository;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,8 @@ public class CreditCardService {
     @Autowired
     private MarginsFeign marginsFeign;
 
+    @Autowired
+    private IMovementRepository movementRepository;
     /*
     Las operaciones básicas que va tener que implementar este microservicio son:
     ● POST (crear tarjeta con límites) para esto vamos a consumir api-margins
@@ -41,7 +47,8 @@ public class CreditCardService {
         creditCard.setIdNumber(idNumber);
         creditCard.setCardNumber(idNumber + Math.random()*Math.pow(10,6));
         MarginsFeign.CalificationDTO calificationDTO = marginsFeign.calculateCalification(creditCard.getIdType(), creditCard.getIdNumber());
-        BigDecimal totalMarginCard = calificationDTO.getSublimits().stream().filter(sublimit -> sublimit.getConcept().name().equals(MarginsFeign.CalificationDTO.Concept.CARD)).findFirst().get().getTotalMargin();
+        //BigDecimal totalMarginCard = calificationDTO.getSublimits().get(0).getTotalMargin();//.stream().filter(sublimit -> sublimit.getConcept().name().equals(MarginsFeign.CalificationDTO.Concept.CARD)).findFirst().get().getTotalMargin();
+        BigDecimal totalMarginCard = calificationDTO.getSublimits().stream().filter(sublimit -> sublimit.getConcept().name().equals("CARD")).findFirst().get().getTotalMargin();
         creditCard.setLimit(totalMarginCard);
         creditCard.setAvailableLimit(totalMarginCard);
         creditCard.setUsedLimit(BigDecimal.ZERO);
@@ -58,5 +65,12 @@ public class CreditCardService {
     }
 
 
-
+    public void debit(Movement movement) throws CardException {
+        BigDecimal amount = movement.getAmount().getValue();
+        CreditCard creditCard = creditCardRepository.findByIdTypeAndIdNumber(movement.getDebtCollector().getIdType(), movement.getDebtCollector().getIdNumber()).orElseThrow(() -> new CardException(MessageError.CUSTOMER_NOT_HAVE_CARD));
+        creditCard.setUsedLimit(creditCard.getAvailableLimit().add(amount));
+        creditCard.setAvailableLimit(creditCard.getAvailableLimit().subtract(amount));
+        creditCardRepository.save(creditCard);
+        movementRepository.save(movement);
+    }
 }
