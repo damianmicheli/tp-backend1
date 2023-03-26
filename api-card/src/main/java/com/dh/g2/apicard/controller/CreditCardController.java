@@ -3,6 +3,7 @@ package com.dh.g2.apicard.controller;
 
 import com.dh.g2.apicard.exceptions.CardException;
 import com.dh.g2.apicard.model.CreditCard;
+import com.dh.g2.apicard.model.Movement;
 import com.dh.g2.apicard.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,11 @@ public class CreditCardController {
     @ResponseStatus(value = HttpStatus.FOUND)
     CreditCard findCreditCard(@RequestBody CreditCard creditCard) {
         return creditCardService.find(creditCard.getIdType(), creditCard.getIdNumber());
+    }
+
+    @PutMapping("/debit")
+    public void debit(@RequestBody Movement movement) throws CardException {
+        this.creditCardService.debit(movement);
     }
 
 }
