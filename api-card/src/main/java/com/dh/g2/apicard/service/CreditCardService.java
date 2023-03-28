@@ -8,6 +8,8 @@ import com.dh.g2.apicard.model.Currency;
 import com.dh.g2.apicard.model.Movement;
 import com.dh.g2.apicard.repository.ICreditCardRepository;
 import com.dh.g2.apicard.repository.IMovementRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,8 @@ public class CreditCardService {
        4) En caso de no haber disponible se lanza un error.
     */
 
-
+    @Retry(name = "retry Card")
+    @CircuitBreaker(name = "cardCircuitCreation", fallbackMethod = "saveCardFallBack")
     public String save(String idType, String idNumber) throws CardException {
 
         if (creditCardRepository.findByIdTypeAndIdNumber(idType, idNumber).isPresent()) {
@@ -55,15 +58,10 @@ public class CreditCardService {
         return creditCardRepository.save(creditCard).getIdNumber();
     }
 
-    //@Retry(name = "retry Card")
-    //@CircuitBreaker(name = "clientCard", fallbackMethod = "findCardFallBack")
+
     public CreditCard find(String idType, String idNumber) {
         return creditCardRepository.findByIdTypeAndIdNumber(idType, idNumber).get();
     }
-    public MarginsFeign.CalificationDTO findCardFallBack(String idNumber, Throwable t) throws Exception {
-        throw new Exception("Not Found Card");
-    }
-
 
     public void debit(Movement movement) throws CardException {
         BigDecimal amount = movement.getAmount().getValue();
@@ -73,4 +71,11 @@ public class CreditCardService {
         creditCardRepository.save(creditCard);
         movementRepository.save(movement);
     }
+
+    //TODO Hacer un log de error (log info), además de la exception
+    public String saveCardFallBack(String idType, String idNumber, Throwable t) throws CardException{
+        throw new CardException(MessageError.CUSTOMER_NOT_HAVE_CARD);
+    }
+
+
 }
