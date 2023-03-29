@@ -22,7 +22,7 @@ services:
     #  - mysql:/var/lib/mysql
 # Names our volume
   mongo-container:
-    image: mongo
+    image: mongo:4.4.3
     container_name: mongo-container
     restart: on-failure
     environment:

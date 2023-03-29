@@ -74,8 +74,7 @@ public class CreditCardService {
 
     //TODO Hacer un log de error (log info), además de la exception
     public String saveCardFallBack(String idType, String idNumber, Throwable t) throws CardException{
-        throw new CardException(MessageError.CUSTOMER_NOT_HAVE_CARD);
+        throw new CardException(MessageError.CUSTOMER_SERVICE_UNAVAILABLE);
     }
-
 
 }
