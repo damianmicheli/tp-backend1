@@ -2,6 +2,7 @@ package com.dh.g2.apicard.controller;
 
 
 import com.dh.g2.apicard.exceptions.CardException;
+import com.dh.g2.apicard.exceptions.MessageError;
 import com.dh.g2.apicard.model.CreditCard;
 import com.dh.g2.apicard.model.Movement;
 import com.dh.g2.apicard.service.CreditCardService;
@@ -18,6 +19,7 @@ public class CreditCardController {
     @Autowired
     private CreditCardService creditCardService;
 
+
     /*
     Las operaciones básicas que va tener que implementar este microservicio son:
     ● POST (crear tarjeta con límites) para esto vamos a consumir api-margins
@@ -31,10 +33,15 @@ public class CreditCardController {
     */
 
     @PostMapping("/save")
-    @ResponseStatus(value = HttpStatus.CREATED)
+    //@ResponseStatus(value = HttpStatus.CREATED)
     String saveCreditCard(@RequestBody CreditCard creditCard ) throws CardException {
-        creditCardService.save(creditCard.getIdType(), creditCard.getIdNumber());
-        return creditCard.getIdNumber();
+        try {
+            creditCardService.save(creditCard.getIdType(), creditCard.getIdNumber());
+            return creditCard.getIdNumber();
+        } catch (Exception e) {
+            //throw new CardException(MessageError.CUSTOMER_SERVICE_UNAVAILABLE);
+            return e.getLocalizedMessage();
+        }
     }
 
     @GetMapping("/find")
