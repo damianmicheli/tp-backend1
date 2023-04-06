@@ -1,5 +1,6 @@
 package com.dh.g2.apiwallet.service;
 
+import com.dh.g2.apiwallet.event.NewWalletEventProducer;
 import com.dh.g2.apiwallet.models.Wallet;
 import com.dh.g2.apiwallet.repository.IWalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,17 @@ public class WalletService implements IWalletService {
     @Autowired
     private IWalletRepository walletRepository;
 
+    @Autowired
+    private NewWalletEventProducer newWalletEventProducer;
+
 
     @Override
     public Long create(Wallet wallet) {
         Wallet walletCreated = walletRepository.save(wallet);
+        NewWalletEventProducer.Message message = new NewWalletEventProducer.Message();
+        message.setIdType(wallet.getIdType());
+        message.setIdNum(wallet.getIdNum());
+        newWalletEventProducer.publishNewWalletEvent(message);
         return walletCreated.getId();
     }
 
