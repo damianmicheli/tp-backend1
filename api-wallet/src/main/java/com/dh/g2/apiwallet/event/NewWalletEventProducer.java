@@ -27,7 +27,6 @@ public class NewWalletEventProducer {
     public static class Message {
         private String idType;
         private int idNum;
-        //private String mesa;
     }
 
 }
